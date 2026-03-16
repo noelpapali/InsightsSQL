@@ -1,0 +1,117 @@
+{
+  "allowed_tables": [
+    "Fact.Sale",
+    "Dimension.Date",
+    "Dimension.Customer",
+    "Dimension.Employee",
+    "Dimension.Stock Item"
+  ],
+  "tables": {
+    "Fact.Sale": {
+      "description": "One row per sale line item. The main fact table for revenue, profit and sales volume analysis.",
+      "columns": {
+        "[Sale Key]": "Primary key",
+        "[Customer Key]": "FK to Dimension.Customer",
+        "[Stock Item Key]": "FK to Dimension.[Stock Item] — the product sold",
+        "[Invoice Date Key]": "FK to Dimension.Date — date the invoice was raised",
+        "[Delivery Date Key]": "FK to Dimension.Date — date goods were delivered",
+        "[Salesperson Key]": "FK to Dimension.Employee — the salesperson who made the sale",
+        "[Quantity]": "Units sold on this line item",
+        "[Unit Price]": "Price per unit before tax",
+        "[Total Excluding Tax]": "Total line revenue before tax. Use this for all revenue and sales value calculations.",
+        "[Tax Amount]": "Tax charged on this line",
+        "[Total Including Tax]": "Total line value including tax",
+        "[Profit]": "Gross profit for this line ([Total Excluding Tax] minus cost of goods)"
+      }
+    },
+    "Dimension.Date": {
+      "description": "Date dimension. Join on [Invoice Date Key] = [Date] to filter by time periods.",
+      "columns": {
+        "[Date]": "The actual date value — used as the join key from Fact.Sale.[Invoice Date Key]",
+        "[Day Number]": "Day of month (1-31)",
+        "[Day]": "Day name e.g. Monday",
+        "[Month]": "Month name e.g. January",
+        "[Short Month]": "Abbreviated month e.g. Jan",
+        "[Calendar Month Number]": "Month number 1-12",
+        "[Calendar Month Label]": "Label like CY2016-Jan",
+        "[Calendar Year]": "4-digit calendar year e.g. 2016",
+        "[Calendar Quarter Number]": "Quarter number 1-4",
+        "[Calendar Quarter Label]": "Label like CY2016-Q1",
+        "[Fiscal Month Number]": "Fiscal month number",
+        "[Fiscal Month Label]": "Fiscal month label",
+        "[Fiscal Year]": "Fiscal year number",
+        "[Fiscal Quarter Number]": "Fiscal quarter 1-4",
+        "[ISO Week Number]": "ISO week number"
+      }
+    },
+    "Dimension.Customer": {
+      "description": "Customer master. One row per customer.",
+      "columns": {
+        "[Customer Key]": "Primary key",
+        "[Customer]": "Customer name",
+        "[Bill To Customer]": "Billing customer name",
+        "[Category]": "Customer category e.g. Novelty Shop, Supermarket",
+        "[Buying Group]": "Buying group or chain the customer belongs to",
+        "[Postal Code]": "Postcode",
+        "[Valid From]": "Date record became active",
+        "[Valid To]": "Date record expired (9999-12-31 means still active)"
+      }
+    },
+    "Dimension.Employee": {
+      "description": "Employee and salesperson master. Filter [Is Salesperson] = 1 for sales reps only.",
+      "columns": {
+        "[Employee Key]": "Primary key",
+        "[Employee]": "Full name",
+        "[Preferred Name]": "Preferred / first name",
+        "[Is Salesperson]": "1 if this employee is a salesperson, 0 otherwise",
+        "[Valid From]": "Date record became active",
+        "[Valid To]": "Date record expired"
+      }
+    },
+    "Dimension.Stock Item": {
+      "description": "Product master. Note: table name has a space — use [Dimension].[Stock Item] in queries.",
+      "columns": {
+        "[Stock Item Key]": "Primary key",
+        "[Stock Item]": "Product name",
+        "[Color]": "Product colour",
+        "[Selling Package]": "How it is sold e.g. Each, Packet",
+        "[Brand]": "Brand name",
+        "[Size]": "Product size",
+        "[Lead Time Days]": "Typical lead time for replenishment",
+        "[Unit Price]": "Listed selling price per unit",
+        "[Recommended Retail Price]": "RRP",
+        "[Tax Rate]": "Tax rate percentage",
+        "[Valid From]": "Date record became active",
+        "[Valid To]": "Date record expired"
+      }
+    }
+  },
+  "business_glossary": {
+    "revenue": "Fact.Sale.[Total Excluding Tax]",
+    "sales": "Fact.Sale.[Total Excluding Tax]",
+    "total sales": "SUM(s.[Total Excluding Tax])",
+    "profit": "Fact.Sale.[Profit]",
+    "gross profit": "Fact.Sale.[Profit]",
+    "units sold": "Fact.Sale.[Quantity]",
+    "quantity": "Fact.Sale.[Quantity]",
+    "salesperson": "Dimension.Employee where [Is Salesperson] = 1",
+    "sales rep": "Dimension.Employee where [Is Salesperson] = 1",
+    "employee": "Dimension.Employee",
+    "product": "Dimension.[Stock Item]",
+    "item": "Dimension.[Stock Item]",
+    "stock item": "Dimension.[Stock Item]",
+    "customer": "Dimension.Customer",
+    "client": "Dimension.Customer",
+    "date": "Dimension.Date joined on Fact.Sale.[Invoice Date Key] = Dimension.Date.[Date]",
+    "year": "Dimension.Date.[Calendar Year]",
+    "month": "Dimension.Date.[Calendar Month Number] or [Calendar Month Label]",
+    "quarter": "Dimension.Date.[Calendar Quarter Number] or [Calendar Quarter Label]",
+    "category": "Dimension.Customer.[Category]"
+  },
+  "join_keys": {
+    "Fact.Sale -> Dimension.Employee": "s.[Salesperson Key] = e.[Employee Key]",
+    "Fact.Sale -> Dimension.Customer": "s.[Customer Key] = c.[Customer Key]",
+    "Fact.Sale -> Dimension.Stock Item": "s.[Stock Item Key] = si.[Stock Item Key]",
+    "Fact.Sale -> Dimension.Date": "s.[Invoice Date Key] = d.[Date]"
+  }
+}
