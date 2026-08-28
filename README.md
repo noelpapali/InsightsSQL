@@ -31,7 +31,7 @@ A conversational AI chatbot that lets you query the WideWorldImportersDW data wa
 Restore `WideWorldImportersDW` to SQL Server Express, then run this in SSMS:
 
 ```sql
-CREATE LOGIN chatbot_user WITH PASSWORD = 'your_db_password_here';
+CREATE LOGIN chatbot_user WITH PASSWORD = 'YourStrongPassword!';
 USE WideWorldImportersDW;
 CREATE USER chatbot_user FOR LOGIN chatbot_user;
 GRANT SELECT ON SCHEMA::Fact TO chatbot_user;
@@ -59,7 +59,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 DB_SERVER=localhost\SQLEXPRESS
 DB_NAME=WideWorldImportersDW
 DB_USER=chatbot_user
-DB_PASSWORD=your_db_password_here
+DB_PASSWORD=YourStrongPassword!
 DB_DRIVER=ODBC Driver 17 for SQL Server
 ```
 
