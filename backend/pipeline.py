@@ -175,6 +175,20 @@ BUSINESS GLOSSARY:
         )
         return response.content[0].text.strip()
 
+    def get_schema(self) -> dict:
+        tables = []
+        for table_name, info in self.schema["tables"].items():
+            columns = [
+                {"name": col, "description": desc}
+                for col, desc in info["columns"].items()
+            ]
+            tables.append({
+                "name": table_name,
+                "description": info["description"],
+                "columns": columns,
+            })
+        return {"tables": tables}
+
     def ask(self, question: str, session_id: str) -> dict:
         history = self.memory.get(session_id)
 

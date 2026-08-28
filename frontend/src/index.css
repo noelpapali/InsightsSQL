@@ -10,6 +10,6 @@
   background: transparent;
 }
 .chat-scroll::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #1e3a8a;
   border-radius: 3px;
 }

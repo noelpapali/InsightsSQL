@@ -6,20 +6,22 @@ export default function ResultsTable({ data }) {
   function formatValue(val) {
     if (val === null || val === undefined) return "—";
     if (typeof val === "number") {
-      return val % 1 === 0 ? val.toLocaleString() : val.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      return val % 1 === 0
+        ? val.toLocaleString()
+        : val.toLocaleString(undefined, { maximumFractionDigits: 2 });
     }
     return String(val);
   }
 
   return (
-    <div className="overflow-auto max-h-64">
+    <div className="overflow-auto max-h-60">
       <table className="w-full text-xs text-left">
         <thead>
-          <tr className="border-b border-slate-700">
+          <tr className="border-b border-[#1e3a8a]/50 bg-[#0d1e56]/40">
             {cols.map((col) => (
               <th
                 key={col}
-                className="px-4 py-2.5 text-slate-400 font-semibold uppercase tracking-wider whitespace-nowrap"
+                className="px-5 py-2.5 text-blue-300/60 font-semibold uppercase tracking-wider whitespace-nowrap"
               >
                 {col}
               </th>
@@ -30,15 +32,12 @@ export default function ResultsTable({ data }) {
           {data.map((row, i) => (
             <tr
               key={i}
-              className={`border-b border-slate-800 ${
-                i % 2 === 0 ? "" : "bg-slate-800/40"
-              } hover:bg-slate-700/40 transition-colors`}
+              className={`border-b border-[#1e3a8a]/20 hover:bg-[#132057]/50 transition-colors ${
+                i % 2 === 0 ? "" : "bg-[#0d1e56]/20"
+              }`}
             >
               {cols.map((col) => (
-                <td
-                  key={col}
-                  className="px-4 py-2 text-slate-300 whitespace-nowrap"
-                >
+                <td key={col} className="px-5 py-2 text-blue-200 whitespace-nowrap">
                   {formatValue(row[col])}
                 </td>
               ))}
@@ -46,9 +45,6 @@ export default function ResultsTable({ data }) {
           ))}
         </tbody>
       </table>
-      <p className="text-slate-600 text-xs px-4 py-2">
-        {data.length} row{data.length !== 1 ? "s" : ""}
-      </p>
     </div>
   );
 }

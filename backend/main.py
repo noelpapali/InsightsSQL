@@ -44,6 +44,11 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/schema")
+def get_schema():
+    return pipeline.get_schema()
+
+
 @app.post("/ask", response_model=AskResponse)
 def ask(req: AskRequest):
     if not req.question.strip():
